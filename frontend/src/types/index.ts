@@ -1,108 +1,132 @@
 // Type definitions for Cashplan.io
+// These types match the backend API responses
 
 export interface User {
   id: number;
   email: string;
+  isAuthenticated: boolean;
 }
 
 export interface Plan {
-  id: number;
-  user_id: number;
+  id?: number;
+  userId: number;
   name: string;
-  created_at: string;
-  updated_at: string;
+  startDate: string; // ISO date string (YYYY-MM-DD)
+  createdAt?: string;
+  updatedAt?: string;
 }
+
+export type EventType = 'income' | 'expense' | 'mortgage' | 'mortgage_repayment' | 'pcp' | 'car_loan';
 
 export interface BaseEvent {
-  id: number;
-  plan_id: number;
-  type: 'income' | 'expense' | 'mortgage' | 'mortgage_repayment' | 'pcp' | 'car_loan';
-  data: unknown;
-  created_at: string;
-  updated_at: string;
-}
-
-export interface IncomeEventData {
-  amount: number;
-  isRecurrent: boolean;
-  months: number[];
-  startDate: string;
-  endDate: string;
+  id?: number;
+  planId: number;
+  type: EventType;
+  createdAt?: string;
+  updatedAt?: string;
 }
 
 export interface IncomeEvent extends BaseEvent {
   type: 'income';
-  data: IncomeEventData;
-}
-
-export interface ExpenseEventData {
-  amount: number;
-  isRecurrent: boolean;
-  months: number[];
-  startDate: string;
-  endDate: string;
+  data: {
+    amount: number;
+    isRecurrent: boolean;
+    months: number[]; // Array of month numbers (1-12), empty for one-off
+    startDate: string; // ISO date string
+    endDate?: string; // ISO date string, optional for recurrent
+  };
 }
 
 export interface ExpenseEvent extends BaseEvent {
   type: 'expense';
-  data: ExpenseEventData;
-}
-
-export interface MortgageEventData {
-  startDate: string;
-  purchasePrice: number;
-  loanedAmount: number;
-  interestRate: number;
-  repaymentPercentage: number;
-  years: number;
+  data: {
+    amount: number;
+    isRecurrent: boolean;
+    months: number[]; // Array of month numbers (1-12), empty for one-off
+    startDate: string; // ISO date string
+    endDate?: string; // ISO date string, optional for recurrent
+  };
 }
 
 export interface MortgageEvent extends BaseEvent {
   type: 'mortgage';
-  data: MortgageEventData;
-}
-
-export interface MortgageRepaymentEventData {
-  mortgageEventId: number;
-  date: string;
-  amount: number;
+  data: {
+    startDate: string; // ISO date string
+    purchasePrice: number;
+    loanedAmount: number;
+    interestRate: number; // Annual rate as decimal (e.g., 0.05 for 5%)
+    repaymentPercentage: number; // Percentage as decimal (e.g., 0.5 for 50%)
+    years: number;
+  };
 }
 
 export interface MortgageRepaymentEvent extends BaseEvent {
   type: 'mortgage_repayment';
-  data: MortgageRepaymentEventData;
-}
-
-export interface PCPEventData {
-  purchasePrice: number;
-  deposit: number;
-  years: 2 | 3 | 5;
-  residualValue: number;
-  interestRate: number;
+  data: {
+    mortgageEventId: number; // Reference to parent mortgage event
+    date: string; // ISO date string
+    amount: number;
+  };
 }
 
 export interface PCPEvent extends BaseEvent {
   type: 'pcp';
-  data: PCPEventData;
-}
-
-export interface CarLoanEventData {
-  purchasePrice: number;
-  deposit: number;
-  years: number; // 3-10
-  interestRate: number;
+  data: {
+    startDate: string; // ISO date string
+    purchasePrice: number;
+    deposit: number;
+    years: 2 | 3 | 5;
+    residualValue: number;
+    interestRate: number; // Annual rate as decimal
+  };
 }
 
 export interface CarLoanEvent extends BaseEvent {
   type: 'car_loan';
-  data: CarLoanEventData;
+  data: {
+    startDate: string; // ISO date string
+    purchasePrice: number;
+    deposit: number;
+    years: number; // 3-10 years
+    interestRate: number; // Annual rate as decimal
+  };
 }
 
 export type Event = IncomeEvent | ExpenseEvent | MortgageEvent | MortgageRepaymentEvent | PCPEvent | CarLoanEvent;
 
 export interface ChartDataPoint {
-  month: number;
+  month: string; // ISO date string (YYYY-MM-DD)
   liquidity: number;
   assets: number;
 }
 
+// API Response types
+export interface ApiResponse<T> {
+  data?: T;
+  error?: string;
+  message?: string;
+}
+
+export interface PlansResponse {
+  plans: Plan[];
+}
+
+export interface PlanResponse {
+  plan: Plan;
+}
+
+export interface EventsResponse {
+  events: Event[];
+}
+
+export interface EventResponse {
+  event: Event;
+}
+
+export interface ChartDataResponse {
+  chartData: ChartDataPoint[];
+}
+
+export interface UserResponse {
+  user: User;
+}
