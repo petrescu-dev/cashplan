@@ -1,0 +1,83 @@
+# Cashplan.io Project Cursor Rules
+
+## File Naming Conventions
+
+### TypeScript and TSX Files
+- **All TypeScript (.ts) and React (.tsx) files must use kebab-case naming**
+- Examples:
+  - ✅ `calculator-example.ts`
+  - ✅ `event-form-overlay.tsx`
+  - ✅ `mortgage-repayment-form.tsx`
+  - ✅ `financial-calculator.ts`
+  - ❌ `CalculatorExample.ts`
+  - ❌ `EventFormOverlay.tsx`
+  - ❌ `MortgageRepaymentForm.tsx`
+  - ❌ `FinancialCalculator.ts`
+
+### Exceptions
+- Configuration files may use their conventional names:
+  - `tsconfig.json`, `tsconfig.app.json`, `tsconfig.node.json`
+  - `vite.config.ts`, `tailwind.config.js`, `postcss.config.js`
+  - `package.json`, `.env`, `.gitignore`
+
+### Directory Names
+- Use lowercase with hyphens for multi-word directories
+- Examples: `event-forms/`, `user-auth/`, `chart-components/`
+
+## Code Style
+
+### Imports
+- Use absolute imports where configured
+- Group imports: external libraries first, then internal modules
+- Sort alphabetically within groups
+
+### Components (React/TSX)
+- Component names should be PascalCase (e.g., `EventFormOverlay`)
+- File names should be kebab-case (e.g., `event-form-overlay.tsx`)
+- One primary component per file
+
+### Type Definitions
+- Use TypeScript interfaces for object shapes
+- Use type aliases for unions, intersections, and complex types
+- Export types from a central `types/` or in model files
+
+### Functions
+- Use camelCase for function names
+- Prefer arrow functions for callbacks and inline functions
+- Use descriptive names that indicate purpose
+
+## Database
+
+### Column Names
+- Use snake_case for database columns (e.g., `user_id`, `start_date`, `created_at`)
+- TypeScript interfaces map snake_case to camelCase (e.g., `userId`, `startDate`, `createdAt`)
+
+## Git
+
+### Branch Names
+- Use kebab-case: `feature/add-mortgage-calculator`, `fix/auth-bug`
+- Prefix with type: `feature/`, `fix/`, `refactor/`, `docs/`
+
+### Commit Messages
+- Use conventional commits format
+- Types: feat, fix, docs, style, refactor, test, chore
+- Example: `feat: add plan start date support`
+
+## Testing
+
+### Test Files
+- Name test files with `.test.ts` or `.spec.ts` suffix
+- Use kebab-case: `calculator-service.test.ts`
+- Mirror the structure of source files
+
+## Documentation
+
+### Comments
+- Use JSDoc for public APIs and exported functions
+- Inline comments for complex logic only
+- Keep comments up-to-date with code changes
+
+### README Files
+- Use UPPERCASE for root-level READMEs: `README.md`
+- Keep READMEs concise and up-to-date
+
