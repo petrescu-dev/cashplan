@@ -1,0 +1,10 @@
+{
+  "require": ["tsx/cjs"],
+  "extensions": ["ts"],
+  "spec": ["src/**/*.test.ts"],
+  "recursive": true,
+  "timeout": 5000,
+  "color": true,
+  "reporter": "spec"
+}
+
