@@ -4,6 +4,9 @@ import session from 'express-session';
 import passport from 'passport';
 import dotenv from 'dotenv';
 import path from 'path';
+import authRoutes from './routes/auth';
+import plansRoutes from './routes/plans';
+import eventsRoutes from './routes/events';
 
 // Load environment variables
 dotenv.config();
@@ -36,9 +39,10 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 
-// Routes will be added here
-// app.use('/auth', authRoutes);
-// app.use('/api/plans', plansRoutes);
+// API Routes
+app.use('/auth', authRoutes);
+app.use('/api/plans', plansRoutes);
+app.use('/api/plans', eventsRoutes);
 
 // Health check endpoint
 app.get('/api/health', (_req: Request, res: Response) => {
