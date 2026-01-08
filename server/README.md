@@ -28,6 +28,25 @@ npm run dev
 
 The server will start on port 3001 (or the port specified in `.env`).
 
+## Testing
+
+Run the test suite:
+```bash
+npm test
+```
+
+Run tests in watch mode:
+```bash
+npm run test:watch
+```
+
+Run tests with coverage:
+```bash
+npm run test:coverage
+```
+
+See [TESTING.md](TESTING.md) for detailed testing guide and best practices.
+
 ## Building
 
 Build the TypeScript code:
