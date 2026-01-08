@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import { generateUnauthenticatedUserId } from '../utils/userId';
+import { generateUnauthenticatedUserId } from '../utils/user-id';
 
 // Extend Express Request type to include userId
 declare global {
