@@ -1,4 +1,4 @@
-import db from './connection';
+import Database from 'better-sqlite3';
 
 /**
  * Migration script to add start_date column to existing plans table
@@ -13,7 +13,7 @@ interface ColumnInfo {
   pk: number;
 }
 
-export const migrateDatabase = () => {
+export const migrateDatabase = (db: Database.Database) => {
   console.log('Running database migrations...');
   
   try {
@@ -38,10 +38,4 @@ export const migrateDatabase = () => {
     throw error;
   }
 };
-
-// Run migrations if this file is executed directly
-if (require.main === module) {
-  migrateDatabase();
-  console.log('All migrations completed successfully');
-}
 

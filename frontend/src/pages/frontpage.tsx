@@ -8,7 +8,6 @@ import {
   Card,
   CardContent,
   CardActions,
-  Grid,
   CircularProgress,
   Alert,
   TextField,
@@ -198,37 +197,45 @@ export function Frontpage() {
               </CardContent>
             </Card>
           ) : (
-            <Grid container spacing={3}>
+            <Box
+              sx={{
+                display: 'grid',
+                gridTemplateColumns: {
+                  xs: '1fr',
+                  sm: 'repeat(2, 1fr)',
+                  md: 'repeat(3, 1fr)',
+                },
+                gap: 3,
+              }}
+            >
               {plans.map((plan) => (
-                <Grid item xs={12} sm={6} md={4} key={plan.id}>
-                  <Card sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
-                    <CardContent sx={{ flexGrow: 1 }}>
-                      <Typography variant="h6" component="h4" gutterBottom>
-                        {plan.name}
+                <Card key={plan.id} sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
+                  <CardContent sx={{ flexGrow: 1 }}>
+                    <Typography variant="h6" component="h4" gutterBottom>
+                      {plan.name}
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary">
+                      Start Date: {new Date(plan.startDate).toLocaleDateString()}
+                    </Typography>
+                    {plan.createdAt && (
+                      <Typography variant="caption" color="text.secondary">
+                        Created: {new Date(plan.createdAt).toLocaleDateString()}
                       </Typography>
-                      <Typography variant="body2" color="text.secondary">
-                        Start Date: {new Date(plan.startDate).toLocaleDateString()}
-                      </Typography>
-                      {plan.createdAt && (
-                        <Typography variant="caption" color="text.secondary">
-                          Created: {new Date(plan.createdAt).toLocaleDateString()}
-                        </Typography>
-                      )}
-                    </CardContent>
-                    <CardActions>
-                      <Button
-                        size="small"
-                        variant="contained"
-                        fullWidth
-                        onClick={() => handleOpenPlan(plan.id!)}
-                      >
-                        Open Plan
-                      </Button>
-                    </CardActions>
-                  </Card>
-                </Grid>
+                    )}
+                  </CardContent>
+                  <CardActions>
+                    <Button
+                      size="small"
+                      variant="contained"
+                      fullWidth
+                      onClick={() => handleOpenPlan(plan.id!)}
+                    >
+                      Open Plan
+                    </Button>
+                  </CardActions>
+                </Card>
               ))}
-            </Grid>
+            </Box>
           )}
         </Box>
 
