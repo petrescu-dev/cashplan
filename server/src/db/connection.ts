@@ -1,6 +1,7 @@
 import Database from 'better-sqlite3';
 import fs from 'fs';
 import path from 'path';
+import { migrateDatabase } from './migrate';
 
 const DATABASE_PATH = process.env.DATABASE_PATH || './data/cashplan.db';
 
@@ -30,8 +31,7 @@ const initializeDatabase = () => {
   
   // Run migrations for existing databases
   try {
-    const { migrateDatabase } = require('./migrate');
-    migrateDatabase();
+    migrateDatabase(db);
   } catch (error) {
     console.warn('Migration skipped or failed:', error);
   }

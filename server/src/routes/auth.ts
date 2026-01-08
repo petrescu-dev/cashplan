@@ -6,8 +6,13 @@ import { optionalAuth } from '../middleware/auth';
 
 const router = Router();
 
-// Configure Google OAuth Strategy
-if (process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET) {
+/**
+ * Initialize Passport Google OAuth Strategy
+ * Must be called after environment variables are loaded
+ */
+export const initializePassport = () => {
+  // Configure Google OAuth Strategy
+  if (process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET) {
   passport.use(
     new GoogleStrategy(
       {
@@ -17,6 +22,7 @@ if (process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET) {
       },
       (_accessToken, _refreshToken, profile, done) => {
         try {
+          console.log('GoogleStrategy profile:', profile);
           // Extract email from profile
           const email = profile.emails?.[0]?.value;
           
@@ -41,6 +47,7 @@ if (process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET) {
           
           return done(null, user);
         } catch (error) {
+          console.error('Error in GoogleStrategy:', error);
           return done(error);
         }
       }
@@ -55,7 +62,7 @@ if (process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET) {
   // Deserialize user from session
   passport.deserializeUser((id: number, done) => {
     try {
-      const stmt = db.prepare('SELECT * FROM users WHERE id = ?');
+      const stmt = db.prepare('SELECT id, email FROM users WHERE id = ?');
       const user = stmt.get(id) as { id: number; email: string } | undefined;
       
       if (!user) {
@@ -67,9 +74,12 @@ if (process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET) {
       done(error);
     }
   });
-} else {
-  console.warn('Google OAuth not configured. Set GOOGLE_CLIENT_ID and GOOGLE_CLIENT_SECRET environment variables.');
-}
+    
+    console.log('✓ Google OAuth strategy initialized');
+  } else {
+    console.warn('⚠️  Google OAuth not configured. Set GOOGLE_CLIENT_ID and GOOGLE_CLIENT_SECRET environment variables.');
+  }
+};
 
 /**
  * GET /auth/google

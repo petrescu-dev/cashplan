@@ -1,15 +1,25 @@
+import dotenv from 'dotenv';
+import path from 'path';
+
+// Load environment variables before anything else, because the other imports depend on them
+const envPath = path.join(__dirname, '../.env');
+const result = dotenv.config({ path: envPath });
+if (result.error) {
+  console.warn(`⚠️  Warning: Could not load .env file from ${envPath}`);
+  console.warn(`Error: ${result.error.message}`);
+} else {
+  console.log(`✓ Environment variables loaded from ${envPath}`);
+}
+
 import express, { Express, Request, Response } from 'express';
 import cors from 'cors';
 import session from 'express-session';
 import passport from 'passport';
-import dotenv from 'dotenv';
-import path from 'path';
-import authRoutes from './routes/auth';
+import authRoutes, { initializePassport } from './routes/auth';
 import plansRoutes from './routes/plans';
 import eventsRoutes from './routes/events';
 
-// Load environment variables
-dotenv.config();
+
 
 const app: Express = express();
 const PORT = process.env.PORT || 3001;
@@ -38,6 +48,9 @@ app.use(session({
 // Initialize Passport
 app.use(passport.initialize());
 app.use(passport.session());
+
+// Initialize Passport strategies (after env vars are loaded)
+initializePassport();
 
 // API Routes
 app.use('/auth', authRoutes);
